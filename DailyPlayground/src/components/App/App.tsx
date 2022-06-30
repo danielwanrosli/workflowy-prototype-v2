@@ -32,6 +32,8 @@ import packageJson from '../../../package.json';
 
 declare const global: { HermesInternal: null | {} };
 
+const functions = require('firebase-functions');
+
 // Silence an annoying warning about a harmless require cycle in React Native's
 // fetch library.
 // See https://github.com/facebook/react-native/issues/23130.
@@ -195,21 +197,31 @@ const App = () => {
   /**
    * Create a temporary room that will become available to join.
    */
-  const createRoom = () => {
-    setRoomCreateError(false);
-    setAppState(AppState.Creating);
-    api
-      .createRoom()
-      .then((room) => {
-        setRoomUrlFieldValue(room.url);
-        setAppState(AppState.Idle);
-      })
-      .catch(() => {
-        setRoomCreateError(true);
-        setRoomUrlFieldValue(undefined);
-        setAppState(AppState.Idle);
-      });
-  };
+
+  // exports.myScheduledFunction = functions.pubsub.schedule('every 1 minute'). onRun(() => {
+    const createRoom = () => {
+      setRoomCreateError(false);
+      setAppState(AppState.Creating);
+      api
+        .createRoom()
+        .then((room) => {
+          setRoomUrlFieldValue(room.url);
+          setAppState(AppState.Idle);
+        })
+        .catch(() => {
+          setRoomCreateError(true);
+          setRoomUrlFieldValue(undefined);
+          setAppState(AppState.Idle);
+        });
+    };
+
+  // } ) 
+
+
+
+
+  // };
+
 
   /**
    * Join the room provided by the user or the temporary room created by createRoom
@@ -285,14 +297,13 @@ const App = () => {
               }
               alwaysBounceVertical={false}
             >
-              <Image
+              {/* <Image
                 style={styles.logo}
                 source={require('../../../assets/logo.png')}
-              />
+              /> */}
               <View style={styles.buttonContainer}>
-                <Text style={styles.bodyText}>
-                  To get started, enter an existing room URL or create a
-                  temporary demo room
+                <Text style={styles.bodyText} text-align={'center'}>
+                  WorkFlowy Prototype Test
                 </Text>
                 <View
                   style={[
